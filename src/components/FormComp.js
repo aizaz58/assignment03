@@ -1,14 +1,37 @@
 import React, { useState } from 'react'
 import { FormGroup ,Form,Label,Input,Row,Container,Col,Button} from 'reactstrap';
+import { useStateContext } from '../context/StateProvider';
 const FormComp = () => {
-  const [country, setCountry] = useState(null)
-    const handleSubmit=(e)=>{
-        e.preventDefault()
-        console.log(country)
+  
+  const [name, setname] = useState("")
+  const {setCountry,countryDataList,country}=useStateContext()
+   
+const fetchData=async()=>{
+  try {
+      
+      const res=await fetch(`https://restcountries.com/v3.1/name/${name}`)
+      if(!res.ok){
+          throw new Error(`Error occured of ${res.status} with message: ${res.statusText}` )
+      }else{
+          const data=await res.json()
 
 
+          
+          setCountry((prevData)=>[...prevData,...data])
+
+     
+          
+      }
+  } catch (error) {
+      
+  }
 }
+const handleSubmit=(e)=>{
+  e.preventDefault()
 
+fetchData()
+setname("")
+}
   return (
     <div>
     <Container>
@@ -20,11 +43,12 @@ const FormComp = () => {
         <FormGroup floating>
 
     <Input
-    onChange={(e)=>setCountry(e.target.value)}
+    onChange={(e)=>setname(e.target.value)}
       id="exampleSearch"
       name="search"
       placeholder="Enter Country"
       type="search"
+      value={name}
     />
      <Label for="exampleSearch">
       Search
