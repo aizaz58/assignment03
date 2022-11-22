@@ -4,11 +4,12 @@ export const StateContext=createContext()
 
 export const StateProvider=({children})=>{
     const [country, setCountry] = useState([])
-    let countryDataList=[]
+    const [CountryIndex, setCountryIndex] = useState("")
+   
 
    
 return(
-<StateContext.Provider value={{country,setCountry,countryDataList}}>
+<StateContext.Provider value={{country,setCountry,setCountryIndex,CountryIndex}}>
     {children}
 </StateContext.Provider>
 )

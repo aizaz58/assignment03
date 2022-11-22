@@ -1,19 +1,18 @@
 import React from 'react'
 import { Button} from 'reactstrap';
 import { useStateContext } from '../context/StateProvider'
-
+import { Link } from 'react-router-dom';
 const TableRow = ({index}) => {
-    let langStr=""
-    let comma=""
-    const {country}=useStateContext()
+   
+    const {country,setCountryIndex}=useStateContext()
  const el=country[index]
  const languages=el.languages
- for (const [key,value] of Object.entries(languages)) {
-     langStr+=`${value} `
-     comma= langStr.replace(/\s/gi,",")
-    }
-    var finalStr=comma.slice(0,-1) 
-  
+
+    var finalStr=Object.values(languages).join(",") 
+  const handleClick=()=>{
+setCountryIndex(index)
+  }
+
   return (
     <>
          <tr>
@@ -30,7 +29,10 @@ const TableRow = ({index}) => {
       {finalStr}
       </td>
       <td>
+      <Link to={`/country/${index}`}>
         <Button outline color="success">View</Button>
+
+      </Link>
     
       </td>
     </tr>

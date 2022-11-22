@@ -4,7 +4,7 @@ import { useStateContext } from '../context/StateProvider';
 const FormComp = () => {
   
   const [name, setname] = useState("")
-  const {setCountry,countryDataList,country}=useStateContext()
+  const {setCountry}=useStateContext()
    
 const fetchData=async()=>{
   try {
