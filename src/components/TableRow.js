@@ -7,7 +7,7 @@ const TableRow = ({index}) => {
     const {country,setCountryIndex}=useStateContext()
  const el=country[index]
  const languages=el.languages
-
+console.log(Object.values(languages).join())
     var finalStr=Object.values(languages).join(",") 
   const handleClick=()=>{
 setCountryIndex(index)
