@@ -1,17 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button} from 'reactstrap';
 import { useStateContext } from '../context/StateProvider'
 import { Link } from 'react-router-dom';
 const TableRow = ({index}) => {
    
     const {country,setCountryIndex}=useStateContext()
- const el=country[index]
- const languages=el.languages
-console.log(Object.values(languages).join())
-    var finalStr=Object.values(languages).join(",") 
-  const handleClick=()=>{
-setCountryIndex(index)
-  }
+    useEffect(() => {
+   fetchData()   
+      
+    }, [country])
+
+    const el=country[index]
+    const languages=el.languages
+
+    const fetchData=()=>{
+    }
+    
+  
 
   return (
     <>
@@ -26,7 +31,7 @@ setCountryIndex(index)
       {el.name.official}
       </td>
       <td>
-      {finalStr}
+      {Object.values(languages).join(",") }
       </td>
       <td>
       <Link to={`/country/${index}`}>

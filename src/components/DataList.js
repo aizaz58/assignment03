@@ -1,10 +1,13 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Table,Container} from 'reactstrap';
 import { useStateContext } from '../context/StateProvider';
 import TableRow from './TableRow';
 const DataList = () => {
   const {country}=useStateContext()
+  useEffect(() => {
+   
+  }, [country])
   
   return (
     <div>
