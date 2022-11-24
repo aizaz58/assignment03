@@ -5,11 +5,12 @@ const FormComp = () => {
   
   const [name, setname] = useState("")
   const {setCountry}=useStateContext()
-   
+  
 const fetchData=async()=>{
   try {
       
       const res=await fetch(`https://restcountries.com/v3.1/name/${name}`)
+      console.log(res)
       if(!res.ok){
           throw new Error(`Error occured of ${res.status} with message: ${res.statusText}` )
       }else{
@@ -33,12 +34,12 @@ fetchData()
 setname("")
 }
   return (
-    <div>
+    <div >
     <Container>
 
 <Col>
 <Form onSubmit={handleSubmit}>
-    <Row>
+    <Row className="d-flex justify-content-center align-items-center">
    <Col sm={8}>
         <FormGroup floating>
 
@@ -51,14 +52,14 @@ setname("")
       value={name}
     />
      <Label for="exampleSearch">
-      Search
+      Enter country name
     </Label>
   </FormGroup>
    </Col>
-   <Col sm={4}>
+   <Col sm={4} className='mb-3'>
 
-  <Button>
-      Submit
+  <Button className='btn-danger'>
+      Search
     </Button>
    </Col>
     </Row>

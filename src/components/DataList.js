@@ -10,10 +10,10 @@ const DataList = () => {
   }, [country])
   
   return (
-    <div>
+    <div className='mt-5'>
       <Container>
 
-      <Table hover responsive bordered >
+      <Table hover responsive striped bordered >
       <thead>
     <tr>
       <th>

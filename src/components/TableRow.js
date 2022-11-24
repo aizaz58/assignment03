@@ -4,7 +4,7 @@ import { useStateContext } from '../context/StateProvider'
 import { Link } from 'react-router-dom';
 const TableRow = ({index}) => {
    
-    const {country,setCountryIndex}=useStateContext()
+    const {country}=useStateContext()
     useEffect(() => {
    fetchData()   
       

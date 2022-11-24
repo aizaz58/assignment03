@@ -1,52 +1,78 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Card, CardBody, CardImg, Button, Col, Container, ListGroup, ListGroupItem, ListGroupItemHeading, Modal, ModalHeader, ModalFooter, ModalBody, Badge, Form, Input, FormGroup, Label } from 'reactstrap';
+import { Card, CardBody, CardImg, Button, Col, Container, ListGroup, ListGroupItem, ListGroupItemHeading, Modal, ModalHeader, ModalFooter, ModalBody, Form, Input, FormGroup,  FormFeedback } from 'reactstrap';
 import { BsFillPinMapFill } from 'react-icons/bs';
 import { FaMapMarkerAlt } from 'react-icons/fa';
-import { IoCloseCircleOutline } from 'react-icons/io5';
+
 import { useStateContext } from '../context/StateProvider';
 import BadgeComp from '../components/BadgeComp';
 const CountryDetail = () => {
-  const {id}=useParams()
+
+ const [input, setinput] = useState(false)
+  const params=useParams()
+  const id=params.id
   let currencies=""
   let newLanguages={}
   
-  const {country,setCountry}=useStateContext()
+  const {country,setCountry,allLanguages,setallLanguages}=useStateContext()
+  
+  
   const selectedCountry=country[id]
   
-  for (const [key,value] of Object.entries(selectedCountry.currencies)) {
-    currencies+=`${value.name}:${value.symbol}`
+  for (const [_,value] of Object.entries(selectedCountry.currencies)) {
+    currencies+=`${value.name}:${value.symbol} `
   }
-
+  
+  
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
-const [lang, setlang] = useState("")
-const [allLanguages, setallLanguages] = useState([...Object.values(selectedCountry.languages)])
-console.log(allLanguages)
+const [lang, setlang] = useState("");
+useEffect(() => {
+  
+  setallLanguages([...Object.values(selectedCountry.languages)])
+
+  
+}, [])
+
+
 const handleChange=(e)=>{
-setlang(e.target.value)
+  setlang(e.target.value)
 }
 const handleSubmit=(e)=>{
   e.preventDefault()
-setallLanguages(prevData=>[...prevData,lang])
-setlang("")
+
+  const lowerLang=allLanguages.map(el=>(
+    el.toLowerCase()
+
+  ))
+
+  if(!lowerLang.includes(lang.toLocaleLowerCase())){
+setinput(false)
+    setallLanguages(prevData=>[...prevData,lang])
+    setlang("")
+  }else{
+    setinput(true)
+//Object.assign( inputRef.current.props,{...inputRef.current.props,invalid})
+  
+  }
 }
+
 const handleSave=()=>{
 
   allLanguages.forEach(el=>{
     Object.assign(newLanguages,{[el.slice(0,3).toLowerCase()]:el})
     
-    toggle()
     
   })
-  //setCountry(prevData=>[...prevData,Object.assign(prevData[id].languages,newLanguages)])
-  //selectedCountry.languages=newLanguages
-  console.log(country)
+  toggle()
+  selectedCountry.languages=newLanguages 
+  
 }
+
   return (
-    <div>
-  <Container>
+    <div className='mt-5'>
+  <Container className='d-flex align-items-center justify-content-center'>
 <Col xs="12" md="6" >
     <Card>
     <CardImg
@@ -103,8 +129,8 @@ const handleSave=()=>{
         </ListGroupItemHeading>
       </ListGroupItem>
       <ListGroupItem>
-      <Button color="danger" onClick={toggle}>
-        Click Me
+      <Button className='w-100 btn-danger'  onClick={toggle}>
+    Add
       </Button>
       </ListGroupItem>
       </ListGroup>
@@ -119,13 +145,15 @@ const handleSave=()=>{
 
 
       <Modal isOpen={modal} toggle={toggle} >
-        <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+        <ModalHeader toggle={toggle}>Add Languages</ModalHeader>
         <ModalBody>
         <Form onSubmit={handleSubmit}>
         <FormGroup row>
    
     <Col sm={8}>
-      <Input
+      <Input 
+     invalid={input}
+     
         id="language"
         name="language"
         placeholder="enter language"
@@ -133,13 +161,23 @@ const handleSave=()=>{
         value={lang}
         onChange={handleChange}
       />
+       <FormFeedback invalid>
+      This language name is already present.
+    </FormFeedback>
+    </Col>
+    <Col sm={4}>
+
+      <Button>Add</Button>
     </Col>
   </FormGroup>
         </Form>
+        <div className='d-flex flex-wrap gap-1'>
+
         {allLanguages.map((lang,index)=>(
-<BadgeComp lang={lang} key={index}/>
-        ))}{" "}
+          <BadgeComp lang={lang} index={index} key={index}/>
+          ))}{" "}
         
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleSave}>

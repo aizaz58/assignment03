@@ -1,7 +1,18 @@
 import React from 'react'
 import { IoCloseCircleOutline } from 'react-icons/io5'
 import {Badge} from 'reactstrap'
-const BadgeComp = ({lang}) => {
+import { useStateContext } from '../context/StateProvider'
+const BadgeComp = ({lang,index}) => {
+  const {allLanguages,setallLanguages}=useStateContext()
+ 
+  const handleDelete=()=>{
+const updated=allLanguages.filter((el,i)=>{
+  return(i!==index)
+      })
+
+setallLanguages(updated)
+  }
+
   return (
     <>
         <Badge
@@ -10,7 +21,7 @@ const BadgeComp = ({lang}) => {
     pill
     
   >
-  {lang} <IoCloseCircleOutline className='close-icon'/>
+  {lang} <IoCloseCircleOutline onClick={handleDelete} className='close-icon'/>
   </Badge>
     </>
   )

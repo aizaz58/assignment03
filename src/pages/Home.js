@@ -9,11 +9,11 @@ const Home = () => {
  
 
   return (
-    <>
+    <div className='my-5'>
     
         <FormComp/>
         { country.length>0 && ( <DataList/>) }
-    </>
+    </div>
   )
 }
 
