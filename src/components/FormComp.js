@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
-import { FormGroup ,Form,Label,Input,Row,Container,Col,Button} from 'reactstrap';
+import { FormGroup ,Form,Label,Input,Row,Container,Col,Button, FormFeedback} from 'reactstrap';
 import { useStateContext } from '../context/StateProvider';
 const FormComp = () => {
   
   const [name, setname] = useState("")
   const {setCountry}=useStateContext()
-  
+  const [input, setinput] = useState(false)
 const fetchData=async()=>{
   try {
       
       const res=await fetch(`https://restcountries.com/v3.1/name/${name}`)
-      console.log(res)
+    
       if(!res.ok){
+        setinput(true)
           throw new Error(`Error occured of ${res.status} with message: ${res.statusText}` )
       }else{
+        setinput(false)
           const data=await res.json()
 
 
@@ -50,7 +52,11 @@ setname("")
       placeholder="Enter Country"
       type="search"
       value={name}
+      invalid={input}
     />
+     <FormFeedback invalid>
+      please enter any country name.
+    </FormFeedback>
      <Label for="exampleSearch">
       Enter country name
     </Label>
